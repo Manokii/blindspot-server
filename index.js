@@ -22,10 +22,10 @@ const server = express()
 const io = socketIO(server);
 const livestream = io.of("/live");
 
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+// io.configure(function () { 
+//   io.set("transports", ["xhr-polling"]); 
+//   io.set("polling duration", 10); 
+// });
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
