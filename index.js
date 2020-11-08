@@ -1,23 +1,33 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-const socketio = require("socket.io");
+const socketIO = require("socket.io");
+const INDEXFILE = '/index.html'
 
 const port = process.env.PORT || 3100;
 
-const app = express();
-const server = http.createServer(app);
+// const app = express();
+// const server = http.createServer(app);
 
-app.get("/", (req, res) => {
-  res.send("Server is up and running");
-});
+// app.get("/", (req, res) => {
+//   res.send("Server is up and running");
+// });
 
-server.listen(port, () => {
+const server = express()
+  .use((req, res) => res.sendFile(INDEXFILE, {root: __dirname}))
+  .listen(port, () => {
   console.log(`[server] Listening to port: ${port}`);
 });
 
-const io = socketio(server);
+const io = socketIO(server);
 const livestream = io.of("/live");
+
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
+setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 
 let tournament, bracket, control, organizer;
 let live = {
