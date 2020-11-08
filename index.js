@@ -27,7 +27,7 @@ const livestream = io.of("/live");
 //   io.set("polling duration", 10); 
 // });
 
-setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+setInterval(() => io.emit('time', new Date().toTimeString()), 1000 * 60);
 
 let tournament, bracket, control, organizer;
 let live = {
